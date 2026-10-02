@@ -10,18 +10,46 @@ native Clang/clangd. Neovim integration uses Neovim 0.11+.
 
 ## Install
 
+Install directly from GitHub in a virtual environment. Git must be available
+on PATH; no manual clone is needed:
+
 ```sh
-git clone https://github.com/hongyx11/xedt.git
-cd xedt
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install .
+python -m pip install git+https://github.com/hongyx11/xedt.git
 xedt --help
 ```
 
 For isolated command installation, `pipx install git+https://github.com/hongyx11/xedt.git` also works.
-The package has no runtime Python dependencies. It has not been published to PyPI.
+The package has no runtime Python dependencies. XEDT is distributed through
+GitHub and has not been published to PyPI, so use the GitHub URL instead of
+`pip install xedt`.
+
+### Use requirements.txt
+
+Add this line to your project's `requirements.txt` (omit `pip install`):
+
+```text
+xedt @ git+https://github.com/hongyx11/xedt.git
+```
+
+Then install it in your activated virtual environment:
+
+```sh
+python -m pip install -r requirements.txt
+xedt --version
+```
+
+The unpinned URL follows the repository's default branch. For reproducible
+installs, append a full commit SHA. For example, this pins XEDT 0.1.2:
+
+```text
+xedt @ git+https://github.com/hongyx11/xedt.git@01b70935647f38f65092a18a250ccdef7ea10593
+```
+
+These requirements use a public HTTPS URL and need no local checkout paths.
+See [pip's VCS installation documentation](https://pip.pypa.io/en/stable/topics/vcs-support/).
 
 ## Set up a project
 
@@ -221,6 +249,10 @@ CCCL archive failed the syntax probe; the pinned upstream release fixes it.
 ## Development
 
 ```sh
+git clone https://github.com/hongyx11/xedt.git
+cd xedt
+python3 -m venv .venv
+source .venv/bin/activate
 python3 -m pip install -e .
 python3 -m unittest discover -s tests -v
 python3 -m pip wheel --no-deps . --wheel-dir dist
