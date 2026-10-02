@@ -1,0 +1,86 @@
+[
+  {
+    "name": "libgcc-12-dev",
+    "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libgcc-12-dev_12.2.0-14+deb12u1_amd64.deb",
+    "sha256": "d720259380a84f2ffc6fe516eff5cbe9c8a005138e8d6a5748747ba4b3404a82",
+    "kind": "deb"
+  },
+  {
+    "name": "libstdc++-12-dev",
+    "url": "https://deb.debian.org/debian/pool/main/g/gcc-12/libstdc++-12-dev_12.2.0-14+deb12u1_amd64.deb",
+    "sha256": "d28def6c23630432b57cb38a4c2fd67a79d4e0484027386ca6e8d6005c3d7a73",
+    "kind": "deb"
+  },
+  {
+    "name": "libc6-dev",
+    "url": "https://deb.debian.org/debian/pool/main/g/glibc/libc6-dev_2.36-9+deb12u14_amd64.deb",
+    "sha256": "0218fc2befcd784c1b0c6292c0a137ce89fad054efaa579ad083bee0f2c01aae",
+    "kind": "deb"
+  },
+  {
+    "name": "libzstd-dev",
+    "url": "https://deb.debian.org/debian/pool/main/libz/libzstd/libzstd-dev_1.5.4+dfsg2-5_amd64.deb",
+    "sha256": "5d079cf5f96b724c97a611630ea428a1ebe793746db7bbf6e1455803b962b4ea",
+    "kind": "deb"
+  },
+  {
+    "name": "linux-libc-dev",
+    "url": "https://deb.debian.org/debian/pool/main/l/linux/linux-libc-dev_6.1.176-1_amd64.deb",
+    "sha256": "8bb258735b9dffbb111da778ebdd024750878e435ffd9dfcadcb6762ede6b4cf",
+    "kind": "deb"
+  },
+  {
+    "name": "libomp-14-dev",
+    "url": "https://deb.debian.org/debian/pool/main/l/llvm-toolchain-14/libomp-14-dev_14.0.6-12_amd64.deb",
+    "sha256": "be2ef363d3c97a4af2e2730d27753cee5f750566992e2fab6dfbb90181a7e428",
+    "kind": "deb"
+  },
+  {
+    "name": "libopenmpi-dev",
+    "url": "https://deb.debian.org/debian/pool/main/o/openmpi/libopenmpi-dev_4.1.4-3+b1_amd64.deb",
+    "sha256": "089c17e74439e53ad6cab5f11d935bc9df93b26da0bd87b2b72eb789b467bea2",
+    "kind": "deb"
+  },
+  {
+    "name": "cuda_cudart",
+    "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/linux-x86_64/cuda_cudart-linux-x86_64-13.2.51-archive.tar.xz",
+    "sha256": "539edc1056e44d319f2112e9971c6415d78d4dde04b3f6ffbd20ec808e718526",
+    "kind": "cuda"
+  },
+  {
+    "name": "cuda_nvcc",
+    "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvcc/linux-x86_64/cuda_nvcc-linux-x86_64-13.2.51-archive.tar.xz",
+    "sha256": "706b996fefc59dc8d64d317fdf48d0aa84c4ae004eff43009dd918f40c5cc66a",
+    "kind": "cuda"
+  },
+  {
+    "name": "cuda_crt",
+    "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_crt/linux-x86_64/cuda_crt-linux-x86_64-13.2.51-archive.tar.xz",
+    "sha256": "fbc31fed55b7255591f3a19f575ca078827f5e6757d317d009f7ec1e69fcde4b",
+    "kind": "cuda"
+  },
+  {
+    "name": "cuda_cccl",
+    "url": "https://github.com/NVIDIA/cccl/releases/download/v3.4.3/cccl-v3.4.3.tar.gz",
+    "sha256": "8d1f999bd15ca76534420c65039ce8d5c9a638f6e9771225e6ede5ba082c57c1",
+    "kind": "cuda"
+  },
+  {
+    "name": "libcurand",
+    "url": "https://developer.download.nvidia.com/compute/cuda/redist/libcurand/linux-x86_64/libcurand-linux-x86_64-10.4.2.51-archive.tar.xz",
+    "sha256": "a089985ac24fff42b719ab42a015c7df39cd721a3d83bfa4af9249b9fca883dc",
+    "kind": "cuda"
+  },
+  {
+    "name": "fmt",
+    "url": "https://codeload.github.com/fmtlib/fmt/tar.gz/refs/tags/11.0.2",
+    "sha256": "6cb1e6d37bdcb756dbbe59be438790db409cdb4868c66e888d5df9f13f7c027f",
+    "kind": "source"
+  },
+  {
+    "name": "cxxopts",
+    "url": "https://codeload.github.com/jarro2783/cxxopts/tar.gz/refs/tags/v3.3.1",
+    "sha256": "3bfc70542c521d4b55a46429d808178916a579b28d048bd8c727ee76c39e2072",
+    "kind": "source"
+  }
+]

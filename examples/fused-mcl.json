@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "toolkit": "cuda12",
+  "source_dirs": [
+    "fusedmcl",
+    "benchmarks",
+    "examples"
+  ],
+  "exclude": [
+    "build/**",
+    ".git/**",
+    ".xedt/**",
+    ".venv/**"
+  ],
+  "include_dirs": [
+    ".",
+    "fusedmcl"
+  ],
+  "standard": "c++20",
+  "gpu_arch": "sm_80",
+  "cuda_headers": [
+    "*.cuh",
+    "fusedmcl/*.hpp"
+  ],
+  "dependencies": [
+    "mpi",
+    "openmp",
+    "zstd",
+    "fmt",
+    "cxxopts"
+  ],
+  "defines": [],
+  "extra_flags": [],
+  "file_rules": [
+    {
+      "match": "*/retained_multistage.cu",
+      "defines": [
+        "FMCL_TILE_VALUE_FP64=1"
+      ]
+    },
+    {
+      "match": "*/streaming_multistage.cu",
+      "defines": [
+        "FMCL_TILE_VALUE_FP64=1"
+      ]
+    },
+    {
+      "match": "*/ocean_multistage.cu",
+      "defines": [
+        "FMCL_TILE_VALUE_FP64=1",
+        "QUIET"
+      ]
+    },
+    {
+      "match": "benchmarks/single_spgemm/main.cu",
+      "defines": [
+        "FMCL_TILE_VALUE_FP64=1",
+        "QUIET"
+      ]
+    }
+  ],
+  "check_files": [
+    "fusedmcl/localspgemm/retained_hash_product.cu",
+    "fusedmcl/localspgemm/streaming_hash_spgemm.cu",
+    "fusedmcl/dist/engine/mcl_2d_engine.cuh",
+    "fusedmcl/main/main_mcl_2d_summa.cu",
+    "fusedmcl/kernels/local_spgemm.cuh",
+    "fusedmcl/dist/pruning/compact_histogram.cuh",
+    "benchmarks/compact_histogram_test.cu",
+    "fusedmcl/tools/mtx2bcsc.cpp"
+  ]
+}
