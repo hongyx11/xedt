@@ -51,6 +51,83 @@ xedt @ git+https://github.com/hongyx11/xedt.git@01b70935647f38f65092a18a250ccdef
 These requirements use a public HTTPS URL and need no local checkout paths.
 See [pip's VCS installation documentation](https://pip.pypa.io/en/stable/topics/vcs-support/).
 
+## Quick start: edit your CUDA project
+
+After installation, run the following from the root of your existing CUDA/C++
+repository. Keep the installation virtual environment activated, or use a pipx
+installation so `xedt` is available on PATH. Project commands use the current
+directory unless you pass `--project`.
+
+1. Create settings for CUDA 13.2 (requires native Clang/clangd 22+):
+
+   ```sh
+   xedt init --toolkit cuda13
+   ```
+
+   For CUDA 12.4.1, use `--toolkit cuda12` instead. Run `init` once;
+   if `.xedt.json` already exists, edit it directly.
+
+2. Review `.xedt.json`. Set `source_dirs` and `include_dirs` to your repository's
+   directories, choose any needed `dependencies`, and add representative files
+   to `check_files`. For a project with `src/kernel.cu` and `include/kernel.cuh`,
+   those settings could be:
+
+   ```json
+   {
+     "schema": 1,
+     "toolkit": "cuda13",
+     "source_dirs": ["src", "include"],
+     "include_dirs": ["include"],
+     "check_files": ["src/kernel.cu", "include/kernel.cuh"]
+   }
+   ```
+
+   Adjust the example filenames to files that exist in your project. Omitted
+   settings use the defaults described below.
+
+3. Inspect the compiler and generate the editor environment:
+
+   ```sh
+   xedt doctor --no-activate --clion
+   xedt setup --no-activate --clion --check
+   ```
+
+   Setup downloads the selected headers on the first run, probes the compiler,
+   writes `.xedt/compile_commands.json`, exports a root `compile_commands.json`
+   for CLion, and checks your configured files. `--no-activate` preserves an
+   existing build database. If you only use Neovim, omit `--clion` from both
+   commands.
+
+4. Enable your editor:
+
+   - **Neovim:** run `xedt nvim --install`, then add
+     `require("xedt").setup()` after any existing clangd configuration in your
+     Lua config. Restart Neovim and open `src/kernel.cu`. Use `:checkhealth vim.lsp`
+     to inspect LSP attachment. See [Neovim](#neovim) for configuration details.
+   - **CLion:** open the generated root `compile_commands.json` as a compilation
+     database project. See [CLion](#clion) for opening and reloading it.
+
+You can now use completion, diagnostics, and go-to-definition for CUDA/C++ code
+and the downloaded headers. GPU builds and execution still use your actual
+CUDA build machine.
+
+### Everyday commands
+
+Run these from the same project root:
+
+| Task | Command |
+| --- | --- |
+| Check selected files | `xedt check src/kernel.cu include/kernel.cuh` |
+| Check all configured `check_files` | `xedt check` |
+| Refresh after changing files or settings | `xedt setup --no-activate --clion --check` |
+| Refresh using already cached headers without downloads | `xedt setup --no-activate --clion --offline --check` |
+| Inspect command options | `xedt setup --help` |
+
+Omit `--clion` when using only Neovim. After refreshing, reload CLion's
+compilation database; restart Neovim's clangd client if you changed compilers or
+header profiles. When switching between CUDA 12 and CUDA 13, change `toolkit`
+in `.xedt.json` and rerun setup.
+
 ## Set up a project
 
 ```sh
