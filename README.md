@@ -20,17 +20,17 @@ python -m pip install .
 xedt --help
 ```
 
-For isolated command installation, `pipx install /path/to/xedt` also works.
+For isolated command installation, `pipx install git+https://github.com/hongyx11/xedt.git` also works.
 The package has no runtime Python dependencies. It has not been published to PyPI.
 
 ## Set up a project
 
 ```sh
-xedt init --project /path/to/project
-# Review /path/to/project/.xedt.json.
-xedt doctor --project /path/to/project
-xedt setup --project /path/to/project --clion
-xedt check --project /path/to/project src/kernel.cu include/kernel.cuh
+xedt init --project ../my-cuda-project
+# Review ../my-cuda-project/.xedt.json.
+xedt doctor --project ../my-cuda-project
+xedt setup --project ../my-cuda-project --clion
+xedt check --project ../my-cuda-project src/kernel.cu include/kernel.cuh
 ```
 
 Default settings select CUDA 12.4.1 and Linux x86-64 GCC 12/glibc headers,
@@ -49,20 +49,20 @@ The two named profiles pin specific toolkit releases:
 Select a profile when initializing, or edit `toolkit` in the project settings:
 
 ```sh
-xedt init --project /path/to/project --toolkit cuda12
-xedt init --project /path/to/another-project --toolkit cuda13
+xedt init --project ../my-cuda-project --toolkit cuda12
+xedt init --project ../another-cuda-project --toolkit cuda13
 ```
 
 Both profiles support local editing and navigation with the tested compiler.
 Setup requires the syntax probe to pass and reports its diagnostics on failure.
 The current accelerator backend is CUDA; HIP, SYCL, and other backends are not implemented.
 
-Discovery considers Homebrew next to Neovim, PATH's Homebrew, common Homebrew
-locations, and PATH's clangd. An explicit compiler pair is supported:
+Discovery considers Homebrew next to Neovim, PATH's Homebrew, and PATH's clangd.
+Homebrew paths come from `brew --prefix llvm`. To choose an explicit compiler
+pair, put the desired LLVM executables on PATH, then run:
 
 ```sh
-xedt setup --project /path/to/project \
-  --clangd /path/to/llvm/bin/clangd --clangxx /path/to/llvm/bin/clang++
+xedt setup --project ../my-cuda-project --clangd clangd --clangxx clang++
 ```
 
 Edit JSON settings for `source_dirs`, `exclude`, `include_dirs`, `defines`,
@@ -93,7 +93,7 @@ Optional pinned packages: `mpi`, `openmp`, `zstd`, `fmt`, `cxxopts`, plus
 Both profiles pin fmt 11.0.2, matching fused-mcl's declared fallback. The default profile downloads
 only the Linux/CUDA core. Optional archives are selected explicitly.
 
-Headers are cached under `~/Library/Caches/xedt/`, separated by the full
+Headers are cached in `Library/Caches/xedt` beneath the current user's home directory, separated by the full
 selected dependency identity. Archives are verified on every setup run and
 unpacked without executing Linux binaries or package scripts. Use `--cache-dir`
 to relocate them, `--reuse-downloads DIR` to import existing archives by verified
@@ -105,7 +105,7 @@ content, and `--offline` to prohibit downloads.
 xedt nvim --install
 ```
 
-This installs `~/.config/nvim/lua/xedt.lua`. To use another configuration,
+This installs `lua/xedt.lua` in the current user's Neovim configuration directory. To use another configuration,
 pass `--config-dir DIR`. It preserves independently edited modules and does not
 rewrite `init.lua` or an existing LSP configuration. Without `--install`, it
 prints the module for inspection.
@@ -142,9 +142,9 @@ Database Project** after regeneration. See the
 ## Existing projects and fused-mcl
 
 ```sh
-xedt init --project /path/to/fused-mcl --preset fused-mcl
-xedt setup --project /path/to/fused-mcl --no-activate --clion
-xedt check --project /path/to/fused-mcl
+xedt init --project ../fused-mcl --preset fused-mcl
+xedt setup --project ../fused-mcl --no-activate --clion
+xedt check --project ../fused-mcl
 ```
 
 The preset uses the CUDA 12.4 parsing baseline and includes MPI, OpenMP, zstd,
@@ -160,7 +160,7 @@ directly. By default setup activates a relative link at
 after generation. Review/move existing databases yourself before activating.
 Ownership is checked before downloading packages.
 
-You can pass `--config /path/to/settings.json` to use external settings. For
+You can pass `--config settings.json` to use external settings. For
 example, `examples/fused-mcl.json` allows verification of this checkout without
 adding a settings file to it. Neovim needs a normal root marker such as `.git`
 when settings are external.
@@ -179,8 +179,8 @@ The parsing toolkit does not change the project's actual GPU build environment.
 For fused-mcl with CUDA 13, initialize a new project configuration using:
 
 ```sh
-xedt init --project /path/to/fused-mcl --preset fused-mcl --toolkit cuda13
-xedt setup --project /path/to/fused-mcl --no-activate --clion --check
+xedt init --project ../fused-mcl --preset fused-mcl --toolkit cuda13
+xedt setup --project ../fused-mcl --no-activate --clion --check
 ```
 
 If settings already exist, change their `toolkit` to `cuda13`, then rerun setup.
@@ -201,6 +201,9 @@ after adding/removing files, changing compiler/flags, or moving a checkout.
 Generated databases contain absolute paths. Ignore `.xedt/`, root
 `compile_commands.json`, and the generated build database in version control;
 `.xedt.json` is portable project configuration that may be committed.
+The published source and examples contain no machine-specific filesystem paths.
+Compiler, cache, home, and project paths are discovered on the user's machine.
+Resolved paths stay in generated local databases and state files, excluded from Git.
 
 These commands support editing, navigation, and parsing. They do not validate
 GPU code generation, device linking, runtime behavior, or every build variant.

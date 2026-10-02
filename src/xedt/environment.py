@@ -67,8 +67,7 @@ def discover(toolkit, explicit=None, compiler=None):
             result = subprocess.run([brew, "--prefix", "llvm"], text=True, capture_output=True)
             if result.returncode == 0:
                 candidates.append(str(Path(result.stdout.strip()) / "bin/clangd"))
-        candidates += ["/opt/homebrew/opt/llvm/bin/clangd", "/usr/local/opt/llvm/bin/clangd",
-                       shutil.which("clangd") or ""]
+        candidates.append(shutil.which("clangd") or "")
     errors = []
     for candidate in dict.fromkeys(candidates):
         if not Path(candidate).is_file():

@@ -70,6 +70,25 @@ class PackageTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "needs Clang 22"):
                     discover("cuda13", str(binary))
 
+    def test_compiler_discovery_uses_nonstandard_homebrew_prefix(self):
+        from subprocess import CompletedProcess
+        prefix = self.root / "custom-llvm"
+        (prefix / "bin").mkdir(parents=True)
+        (prefix / "bin/clangd").touch()
+        resource = prefix / "lib/clang/22"
+        (resource / "include/cuda_wrappers").mkdir(parents=True)
+        brew = str(self.root / "custom-neovim/bin/brew")
+        executables = {"nvim": str(self.root / "custom-neovim/bin/nvim"), brew: brew}
+        with patch("xedt.environment.platform.system", return_value="Darwin"), \
+             patch("xedt.environment.shutil.which", side_effect=executables.get), \
+             patch("xedt.environment.subprocess.run", return_value=CompletedProcess([], 0, str(prefix) + "\n", "")), \
+             patch("xedt.environment.subprocess.check_output", return_value=str(resource) + "\n"), \
+             patch("xedt.environment.version", return_value=22):
+            toolchain = discover("cuda13")
+        self.assertEqual(toolchain.clangd, str(prefix / "bin/clangd"))
+        self.assertEqual(toolchain.clangxx, str(prefix / "bin/clang++"))
+        self.assertEqual(toolchain.resource, resource)
+
     def test_file_language_and_precision_rules_are_isolated(self):
         for name in ("kernel.cu", "device.cuh", "host.hpp", "main.cpp"):
             (self.root / name).touch()
